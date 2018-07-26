@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Msearch</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container h-100">
+        <div class="row justify-content-center">
+            <form class="form-inline" method="post" id="search-form">
+                <div class="form-group">
+                    <input list="genders" name="gender" class="form-control">
+                    <datalist id="genders">
+                        <option value="male">
+                        <option value="femal">
+                    </datalist>
+                    
+                    <input list="frmAge" name="fromAge" class="form-control">
+                    <datalist id="frmAge">
+                        <option value="19">
+                        <option value="20">
+                    </datalist>
+                    <input list="toAge" name="ToAge" class="form-control">
+                    <datalist id="toAge">
+                        <option value="19">
+                        <option value="20">
+                        <option value="21">
+                        <option value="22">
+                        <option value="23">
+                    </datalist>
+                    <input list="religion" name="religion"  class="form-control">
+                    <datalist id="religion">
+                        <option value="Hindu">
+                        <option value="etc">
+                    </datalist>
+                    
+                </div>
+                <button type="submit" class="btn btn-danger" id="search">SEARCH</button>
+            </form>
+        </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>Age</th>
+                        <th>gender</th>
+                        <th>religion</th>
+                        <th>location</th>
+                    </tr>
+                </thead>
+                <tbody id="showdata">
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" ></script>
+    <script>
+        $(function(){
+            
+             $('#search').click(function(event){
+                event.preventDefault();
+                var formData = $('#search-form').serialize();
+                console.log(formData);
+                $.ajax({
+                    url:'action.php',
+                    method:'POST',
+                    data:formData + '&action=search'
+                }).done(function(res){
+                    var data = JSON.parse(res);
+                    var html = "";
+                    var i;
+                    for(i=0; i<data.length;i++){
+                        html +='<tr>'+
+									'<td>'+data[i].id+'</td>'+
+									'<td>'+data[i].name+'</td>'+
+									'<td>'+data[i].gender+'</td>'+
+                                    '<td>'+data[i].age+'</td>'+
+                                    '<td>'+data[i].religion+'</td>'+
+                                    '<td>'+data[i].location+'</td>'+
+                            '</tr>';
+                    }
+                    $('#showdata').html(html);
+                })
+              
+            });
+
+        })
+    </script>
+  </body>
+</html>
